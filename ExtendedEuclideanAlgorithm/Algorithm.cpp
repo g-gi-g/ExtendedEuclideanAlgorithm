@@ -1,5 +1,11 @@
 #include <iostream>
 
+struct extendedEuclideanAlgorithmResult {
+	int gcd;
+	int x;
+	int y;
+};
+
 int inverseElement(int a, int m) {
 	if (a == 0) {
 		return -1;
@@ -41,6 +47,14 @@ int inverseElement(int a, int m) {
 	return res;
 }
 
+extendedEuclideanAlgorithmResult recursiveExtendedEuclideanAlgorithm(int a, int b) {
+	if (b == 0) return extendedEuclideanAlgorithmResult{ a, 1, 0 };
+	extendedEuclideanAlgorithmResult res = recursiveExtendedEuclideanAlgorithm(b, a%b);
+	int x = res.y;
+	int y = res.x - (a / b) * res.y;
+	return extendedEuclideanAlgorithmResult{ res.gcd, x, y };
+}
+
 int gcd(int a, int b) {
 	while (a != b) {
 		if (a == 0) {
@@ -62,6 +76,8 @@ int gcd(int a, int b) {
 int main() {
 	int a, b;
 	std::cin >> a >> b;
-	std::cout << inverseElement(a, b) << std::endl;
+	//std::cout << inverseElement(a, b) << std::endl;
+	extendedEuclideanAlgorithmResult res = recursiveExtendedEuclideanAlgorithm(a, b);
+	std::cout << "gcd = " << res.gcd << " x = " << res.x << " y = " << res.y;
 	return 0;
 }
